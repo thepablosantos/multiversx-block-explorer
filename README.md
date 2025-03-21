@@ -1,3 +1,7 @@
+# multiversx-block-explorer
+
+Um explorador de blocos para a blockchain MultiversX, construído com React, TypeScript e Vite.
+
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
@@ -52,4 +56,3 @@ export default tseslint.config({
   },
 })
 ```
-# multiversx-block-explorer
