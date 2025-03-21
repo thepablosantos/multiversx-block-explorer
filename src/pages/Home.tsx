@@ -1,5 +1,6 @@
 import StatCard from "../components/StatCard";
 import BlocksList from "../components/BlocksList";
+import TransactionsChart from "../components/transactionsChart";
 import { useQuery } from "@tanstack/react-query";
 import {
   getBlockHeight,
@@ -9,21 +10,32 @@ import {
 } from "../api/multiversx";
 
 function Home() {
+  // Block Height
   const { data: blockData, isLoading: loadingBlock } = useQuery({
     queryKey: ["blockHeight"],
-    queryFn: getBlockHeight
+    queryFn: getBlockHeight,
+    refetchInterval: 15000, // Atualiza a cada 15s
   });
+
+  // Total Transactions
   const { data: txData, isLoading: loadingTx } = useQuery({
-    queryKey: ["transactionsCount"], 
-    queryFn: getTotalTransactions
+    queryKey: ["transactionsCount"],
+    queryFn: getTotalTransactions,
+    refetchInterval: 15000,
   });
+
+  // Total Accounts
   const { data: accountsData, isLoading: loadingAccounts } = useQuery({
     queryKey: ["accountsCount"],
-    queryFn: getTotalAccounts
+    queryFn: getTotalAccounts,
+    refetchInterval: 15000,
   });
+
+  // Validators
   const { data: validatorsData, isLoading: loadingValidators } = useQuery({
     queryKey: ["validators"],
-    queryFn: getValidators
+    queryFn: getValidators,
+    refetchInterval: 30000, // Menos frequente
   });
 
   return (
@@ -49,6 +61,9 @@ function Home() {
           value={loadingValidators ? "Loading..." : validatorsData?.validators?.length}
         />
       </div>
+
+      {/* Transactions Chart */}
+      <TransactionsChart />
 
       {/* Recent Blocks */}
       <div>
