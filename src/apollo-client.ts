@@ -1,8 +1,6 @@
-import { ApolloClient, InMemoryCache } from '@apollo/client';
+import { ApolloClient, InMemoryCache } from "@apollo/client";
 
-const client = new ApolloClient({
-  uri: 'https://api.multiversx.com/graphql', // Substitua pela URL correta da sua API GraphQL
+export const client = new ApolloClient({
+  uri: import.meta.env.VITE_GRAPHQL_ENDPOINT,
   cache: new InMemoryCache(),
 });
-
-export default client; 
