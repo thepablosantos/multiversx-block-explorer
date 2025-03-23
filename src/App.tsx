@@ -4,6 +4,7 @@ import Header from "./components/Header";
 import BlockDetail from "./pages/BlockDetail";
 import TransactionDetail from "./pages/TransactionDetail";
 import AccountDetail from "./pages/AccountDetail";
+import ValidatorDetail from "./pages/ValidatorDetail";
 
 function App() {
   return (
@@ -14,8 +15,8 @@ function App() {
         <Route path="/block/:hash" element={<BlockDetail />} />
         <Route path="/transaction/:hash" element={<TransactionDetail />} />
         <Route path="/account/:address" element={<AccountDetail />} />
+        <Route path="/validator/:key" element={<ValidatorDetail />} />
         {/* Futuras páginas */}
-        <Route path="/validator/:key" element={<div>Validator Details Page (coming soon)</div>} />
         <Route path="/token/:id" element={<div>Token Details Page (coming soon)</div>} />
       </Routes>
     </div>

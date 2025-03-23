@@ -55,3 +55,4 @@ export async function getAccountByAddress(address: string) {
   if (!res.ok) throw new Error("Failed to fetch account details");
   return res.json();
 }
+
