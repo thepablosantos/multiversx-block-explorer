@@ -1,6 +1,6 @@
 import StatCard from "../components/StatCard";
 import BlocksList from "../components/BlocksList";
-import TransactionsChart from "../components/transactionsChart";
+import TransactionsChart from "../components/TransactionsChart";
 import { useQuery } from "@tanstack/react-query";
 import {
   getBlockHeight,
@@ -14,7 +14,7 @@ function Home() {
   const { data: blockData, isLoading: loadingBlock } = useQuery({
     queryKey: ["blockHeight"],
     queryFn: getBlockHeight,
-    refetchInterval: 15000, // Atualiza a cada 15s
+    refetchInterval: 15000, // update after 15s
   });
 
   // Total Transactions

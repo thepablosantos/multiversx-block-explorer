@@ -1,6 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Header from "./components/Header";
+import BlockDetail from "./pages/BlockDetail";
 
 function App() {
   return (
@@ -8,8 +9,8 @@ function App() {
       <Header />
       <Routes>
         <Route path="/" element={<Home />} />
-        {/* Rotas futuras */}
-        <Route path="/block/:hash" element={<div>Block Details Page (coming soon)</div>} />
+        <Route path="/block/:hash" element={<BlockDetail />} />
+        {/* Another pages in the future */}
         <Route path="/transaction/:hash" element={<div>Transaction Details Page (coming soon)</div>} />
         <Route path="/account/:address" element={<div>Account Details Page (coming soon)</div>} />
         <Route path="/validator/:key" element={<div>Validator Details Page (coming soon)</div>} />
