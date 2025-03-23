@@ -4,32 +4,23 @@ import { getBlockByHash } from "../api/multiversx";
 
 function BlockDetail() {
   const { hash } = useParams();
-
-  const { data, isLoading, error } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ["blockDetail", hash],
     queryFn: () => getBlockByHash(hash!),
     enabled: !!hash,
   });
 
-  if (isLoading) return <p className="p-4">Loading block details...</p>;
-  if (error) return <p className="p-4 text-red-500">Error loading block details.</p>;
+  if (isLoading) return <p>Loading block...</p>;
+  if (!data) return <p>Block not found.</p>;
 
   return (
-    <div className="container mx-auto p-6 space-y-6">
-      <h2 className="text-2xl font-bold mb-4">Block Details</h2>
-
-      <div className="bg-gray-800 p-4 rounded-lg shadow-md text-white space-y-2 transition transform hover:scale-[1.01]">
-        <p><strong>Block Hash:</strong> {data.hash}</p>
-        <p><strong>Nonce:</strong> {data.nonce}</p>
-        <p><strong>Round:</strong> {data.round}</p>
-        <p><strong>Epoch:</strong> {data.epoch}</p>
-        <p><strong>Shard:</strong> {data.shard}</p>
-        <p><strong>Timestamp:</strong> {new Date(data.timestamp * 1000).toLocaleString()}</p>
-        <p><strong>Gas Used:</strong> {data.gasUsed}</p>
-        <p><strong>Gas Provided:</strong> {data.gasProvided}</p>
-        <p><strong>Size:</strong> {data.size} bytes</p>
-        <p><strong>Proposer:</strong> {data.proposer}</p>
-      </div>
+    <div className="p-6 bg-[var(--card-bg-color)] rounded-lg">
+      <h2 className="text-xl mb-4">Block Details</h2>
+      <p><strong>Hash:</strong> {data.hash}</p>
+      <p><strong>Nonce:</strong> {data.nonce}</p>
+      <p><strong>Round:</strong> {data.round}</p>
+      <p><strong>Epoch:</strong> {data.epoch}</p>
+      <p><strong>Shard:</strong> {data.shard}</p>
     </div>
   );
 }

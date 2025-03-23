@@ -43,19 +43,19 @@ function Home() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         <StatCard
           title="Block Height"
-          value={loadingBlock ? "Loading..." : blockData?.nonce}
+          value={loadingBlock ? "Loading..." : blockData?.nonce || "..."}
         />
         <StatCard
           title="Total Transactions"
-          value={loadingTx ? "Loading..." : txData}
+          value={loadingTx ? "Loading..." : txData?.count?.toLocaleString() || "..."}
         />
         <StatCard
           title="Total Accounts"
-          value={loadingAccounts ? "Loading..." : accountsData}
+          value={loadingAccounts ? "Loading..." : accountsData?.count?.toLocaleString() || "..."}
         />
         <StatCard
           title="Validators"
-          value={loadingValidators ? "Loading..." : validatorsData?.validators?.length}
+          value={loadingValidators ? "Loading..." : validatorsData?.validators?.length || "..."}
         />
       </div>
 
