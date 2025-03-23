@@ -41,3 +41,10 @@ export async function getBlockByHash(hash: string) {
   if (!res.ok) throw new Error("Failed to fetch block details");
   return res.json();
 }
+
+// Transaction Details by Hash
+export async function getTransactionByHash(hash: string) {
+  const res = await fetch(`${BASE_URL}/transactions/${hash}`);
+  if (!res.ok) throw new Error("Failed to fetch transaction details");
+  return res.json();
+}
