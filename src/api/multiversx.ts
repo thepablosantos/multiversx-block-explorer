@@ -48,3 +48,10 @@ export async function getTransactionByHash(hash: string) {
   if (!res.ok) throw new Error("Failed to fetch transaction details");
   return res.json();
 }
+
+// Account Details by Address
+export async function getAccountByAddress(address: string) {
+  const res = await fetch(`${BASE_URL}/accounts/${address}`);
+  if (!res.ok) throw new Error("Failed to fetch account details");
+  return res.json();
+}
