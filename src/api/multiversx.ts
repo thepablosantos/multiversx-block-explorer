@@ -56,3 +56,9 @@ export async function getAccountByAddress(address: string) {
   return res.json();
 }
 
+// Token Details by ID
+export async function getTokenById(id: string) {
+    const res = await fetch(`${BASE_URL}/tokens/${id}`);
+    if (!res.ok) throw new Error("Failed to fetch token details");
+    return res.json();
+  }

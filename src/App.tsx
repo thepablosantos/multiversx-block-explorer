@@ -5,6 +5,7 @@ import BlockDetail from "./pages/BlockDetail";
 import TransactionDetail from "./pages/TransactionDetail";
 import AccountDetail from "./pages/AccountDetail";
 import ValidatorDetail from "./pages/ValidatorDetail";
+import TokenDetail from "./pages/TokenDetail";
 
 function App() {
   return (
@@ -16,8 +17,7 @@ function App() {
         <Route path="/transaction/:hash" element={<TransactionDetail />} />
         <Route path="/account/:address" element={<AccountDetail />} />
         <Route path="/validator/:key" element={<ValidatorDetail />} />
-        {/* Futuras páginas */}
-        <Route path="/token/:id" element={<div>Token Details Page (coming soon)</div>} />
+        <Route path="/token/:id" element={<TokenDetail />} />
       </Routes>
     </div>
   );
