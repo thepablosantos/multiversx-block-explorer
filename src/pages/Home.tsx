@@ -1,6 +1,7 @@
-import StatCard from "../components/StatCard";
 import BlocksList from "../components/BlocksList";
 import TransactionsChart from "../components/TransactionsChart";
+import StatCard from "../components/StatCard";
+import SearchBox from "../components/SearchBox";
 import { useQuery } from "@tanstack/react-query";
 import {
   getBlockHeight,
@@ -36,27 +37,30 @@ function Home() {
 
   return (
     <div className="space-y-10">
-      <h1 className="text-3xl font-bold text-white text-center md:text-left">
-        Dashboard
-      </h1>
+      <div className="bg-gray-800 rounded-xl p-6 shadow-md">
+        <h1 className="text-3xl font-bold text-white mb-6 text-center md:text-left">
+          Dashboard
+        </h1>
+        <SearchBox />
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        <StatCard
-          title="Block Height"
-          value={loadingBlock ? "Loading..." : blockData?.nonce || "..."}
-        />
-        <StatCard
-          title="Total Transactions"
-          value={loadingTx ? "Loading..." : txData?.count?.toLocaleString() || "..."}
-        />
-        <StatCard
-          title="Total Accounts"
-          value={loadingAccounts ? "Loading..." : accountsData?.count?.toLocaleString() || "..."}
-        />
-        <StatCard
-          title="Validators"
-          value={loadingValidators ? "Loading..." : validatorsData?.validators?.length || "..."}
-        />
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-6">
+          <StatCard
+            title="Block Height"
+            value={loadingBlock ? "Loading..." : blockData?.nonce}
+          />
+          <StatCard
+            title="Total Transactions"
+            value={loadingTx ? "Loading..." : txData}
+          />
+          <StatCard
+            title="Total Accounts"
+            value={loadingAccounts ? "Loading..." : accountsData}
+          />
+          <StatCard
+            title="Validators"
+            value={loadingValidators ? "Loading..." : validatorsData?.validators?.length}
+          />
+        </div>
       </div>
 
       <TransactionsChart />

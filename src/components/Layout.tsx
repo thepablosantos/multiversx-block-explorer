@@ -1,17 +1,21 @@
-import Header from "./Header";
-import Footer from "./Footer";
 import { Outlet } from "react-router-dom";
+import Navigation from "./Navigation";
 
-function Layout() {
+const Layout = () => {
   return (
-    <div className="flex flex-col min-h-screen bg-gray-900 text-white">
-      <Header />
-      <main className="flex-1 container mx-auto p-6">
+    <div className="min-h-screen bg-main-bg text-white">
+      <header className="p-4">
+        <h1 className="text-center text-3xl font-bold mb-6">Degen Sentinels</h1>
+        <Navigation />
+      </header>
+      <main className="p-6 max-w-7xl mx-auto">
         <Outlet />
       </main>
-      <Footer />
+      <footer className="text-center p-4 opacity-50">
+        © {new Date().getFullYear()} Degen Sentinels Explorer
+      </footer>
     </div>
   );
-}
+};
 
 export default Layout;

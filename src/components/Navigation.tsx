@@ -1,19 +1,31 @@
 import { NavLink } from "react-router-dom";
 
-function Navigation() {
-  const linkClasses = ({ isActive }: { isActive: boolean }) =>
-    isActive ? "text-[var(--accent-color)] font-semibold" : "hover:text-[var(--accent-color)]";
+const Navigation = () => {
+  const navItems = [
+    { name: "Dashboard", path: "/" },
+    { name: "Blocks", path: "/blocks" },
+    { name: "Transactions", path: "/transactions" },
+    { name: "Accounts", path: "/accounts" },
+    { name: "Validators", path: "/validators" },
+  ];
 
   return (
-    <nav className="flex gap-6">
-      <NavLink to="/" className={linkClasses}>Dashboard</NavLink>
-      <NavLink to="/blocks" className={linkClasses}>Blocks</NavLink>
-      <NavLink to="/transactions" className={linkClasses}>Transactions</NavLink>
-      <NavLink to="/accounts" className={linkClasses}>Accounts</NavLink>
-      <NavLink to="/validators" className={linkClasses}>Validators</NavLink>
-      <NavLink to="/tokens" className={linkClasses}>Tokens</NavLink>
+    <nav className="flex justify-center space-x-8 bg-card-bg py-4 rounded-2xl shadow-lg">
+      {navItems.map((item) => (
+        <NavLink
+          key={item.name}
+          to={item.path}
+          className={({ isActive }) =>
+            `text-white px-4 py-2 rounded-xl transition-all duration-300 ${
+              isActive ? "bg-accent" : "hover:bg-accent/50"
+            }`
+          }
+        >
+          {item.name}
+        </NavLink>
+      ))}
     </nav>
   );
-}
+};
 
 export default Navigation;
