@@ -1,31 +1,60 @@
 import { NavLink } from "react-router-dom";
 
-const Navigation = () => {
-  const navItems = [
-    { name: "Dashboard", path: "/" },
-    { name: "Blocks", path: "/blocks" },
-    { name: "Transactions", path: "/transactions" },
-    { name: "Accounts", path: "/accounts" },
-    { name: "Validators", path: "/validators" },
-  ];
-
+function Navigation() {
   return (
-    <nav className="flex justify-center space-x-8 bg-card-bg py-4 rounded-2xl shadow-lg">
-      {navItems.map((item) => (
-        <NavLink
-          key={item.name}
-          to={item.path}
-          className={({ isActive }) =>
-            `text-white px-4 py-2 rounded-xl transition-all duration-300 ${
-              isActive ? "bg-accent" : "hover:bg-accent/50"
-            }`
-          }
-        >
-          {item.name}
-        </NavLink>
-      ))}
+    <nav className="flex items-center justify-center gap-8 py-4">
+      <NavLink
+        to="/"
+        className={({ isActive }) =>
+          `text-text-secondary hover:text-accent transition-colors duration-200 ${
+            isActive ? "text-accent" : ""
+          }`
+        }
+      >
+        Dashboard
+      </NavLink>
+      <NavLink
+        to="/blocks"
+        className={({ isActive }) =>
+          `text-text-secondary hover:text-accent transition-colors duration-200 ${
+            isActive ? "text-accent" : ""
+          }`
+        }
+      >
+        Blocks
+      </NavLink>
+      <NavLink
+        to="/transactions"
+        className={({ isActive }) =>
+          `text-text-secondary hover:text-accent transition-colors duration-200 ${
+            isActive ? "text-accent" : ""
+          }`
+        }
+      >
+        Transactions
+      </NavLink>
+      <NavLink
+        to="/accounts"
+        className={({ isActive }) =>
+          `text-text-secondary hover:text-accent transition-colors duration-200 ${
+            isActive ? "text-accent" : ""
+          }`
+        }
+      >
+        Accounts
+      </NavLink>
+      <NavLink
+        to="/validators"
+        className={({ isActive }) =>
+          `text-text-secondary hover:text-accent transition-colors duration-200 ${
+            isActive ? "text-accent" : ""
+          }`
+        }
+      >
+        Validators
+      </NavLink>
     </nav>
   );
-};
+}
 
 export default Navigation;
