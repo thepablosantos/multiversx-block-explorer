@@ -77,7 +77,7 @@ function Home() {
     <div className="p-8 space-y-8">
       <div className="dashboard-container space-y-8">
         <div className="flex justify-between items-center">
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-teal-400 to-blue-500 bg-clip-text text-transparent">
+          <h1 className="text-4xl font-bold bg-gradient-to-r from-teal-400 via-blue-500 to-purple-500 bg-clip-text text-transparent">
             Degen Sentinels
           </h1>
           
@@ -85,12 +85,12 @@ function Home() {
             <input
               type="text"
               placeholder="Search by Address / Txn Hash / Block / Token"
-              className="search-bar"
+              className="search-bar text-sm"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
             <button className="absolute right-4 top-1/2 -translate-y-1/2 text-text-secondary hover:text-accent transition-colors duration-200">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
             </button>
@@ -98,27 +98,47 @@ function Home() {
         </div>
 
         <div className="stats-container">
-          <div className="stat-card">
-            <div className="text-sm text-text-secondary mb-2">Block Height</div>
-            <div className="text-4xl font-bold text-accent">{blockData?.nonce?.toLocaleString() || "..."}</div>
-          </div>
-          <div className="stat-card">
-            <div className="text-sm text-text-secondary mb-2">Total Transactions</div>
-            <div className="text-4xl font-bold text-accent">{txData?.totalProcessed?.toLocaleString() || "..."}</div>
-            <div className="text-sm text-accent mt-2">
-              {txData?.last24h?.toLocaleString() || "0"} today
+          <div className="stat-card group">
+            <div className="text-sm font-medium text-text-secondary mb-1">Block Height</div>
+            <div className="text-2xl font-bold text-accent group-hover:bg-gradient-to-r group-hover:from-teal-400 group-hover:to-blue-500 group-hover:bg-clip-text group-hover:text-transparent transition-all duration-300">
+              {blockData?.nonce?.toLocaleString() || "..."}
             </div>
           </div>
-          <div className="stat-card">
-            <div className="text-sm text-text-secondary mb-2">Total Accounts</div>
-            <div className="text-4xl font-bold text-accent">{accountsData?.totalAccounts?.toLocaleString() || "..."}</div>
-            <div className="text-sm text-accent mt-2">
-              {accountsData?.activeAccounts?.toLocaleString() || "0"} active today
+          <div className="stat-card group">
+            <div className="text-sm font-medium text-text-secondary mb-1">Total Transactions</div>
+            <div className="text-2xl font-bold text-accent group-hover:bg-gradient-to-r group-hover:from-blue-500 group-hover:to-purple-500 group-hover:bg-clip-text group-hover:text-transparent transition-all duration-300">
+              {txData?.totalProcessed?.toLocaleString() || "..."}
+            </div>
+            <div className="text-sm text-accent/80 mt-1 flex items-center">
+              <span className="flex items-center">
+                <svg className="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 0l-3 3a1 1 0 001.414 1.414L9 9.414V13a1 1 0 102 0V9.414l1.293 1.293a1 1 0 001.414-1.414z" clipRule="evenodd" />
+                </svg>
+                {txData?.last24h?.toLocaleString() || "0"}
+              </span>
+              <span className="ml-1">today</span>
             </div>
           </div>
-          <div className="stat-card">
-            <div className="text-sm text-text-secondary mb-2">Validators</div>
-            <div className="text-4xl font-bold text-accent">{validatorsData?.totalValidators?.toString() || "..."}</div>
+          <div className="stat-card group">
+            <div className="text-sm font-medium text-text-secondary mb-1">Total Accounts</div>
+            <div className="text-2xl font-bold text-accent group-hover:bg-gradient-to-r group-hover:from-purple-500 group-hover:to-pink-500 group-hover:bg-clip-text group-hover:text-transparent transition-all duration-300">
+              {accountsData?.totalAccounts?.toLocaleString() || "..."}
+            </div>
+            <div className="text-sm text-accent/80 mt-1 flex items-center">
+              <span className="flex items-center">
+                <svg className="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 0l-3 3a1 1 0 001.414 1.414L9 9.414V13a1 1 0 102 0V9.414l1.293 1.293a1 1 0 001.414-1.414z" clipRule="evenodd" />
+                </svg>
+                {accountsData?.activeAccounts?.toLocaleString() || "0"}
+              </span>
+              <span className="ml-1">active today</span>
+            </div>
+          </div>
+          <div className="stat-card group">
+            <div className="text-sm font-medium text-text-secondary mb-1">Validators</div>
+            <div className="text-2xl font-bold text-accent group-hover:bg-gradient-to-r group-hover:from-pink-500 group-hover:to-teal-400 group-hover:bg-clip-text group-hover:text-transparent transition-all duration-300">
+              {validatorsData?.totalValidators?.toString() || "..."}
+            </div>
           </div>
         </div>
       </div>
@@ -126,7 +146,7 @@ function Home() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         <div className="dashboard-card">
           <div className="flex justify-between items-center mb-6">
-            <h2 className="text-xl font-semibold text-text-primary">Recent Blocks</h2>
+            <h2 className="text-xl font-semibold bg-gradient-to-r from-teal-400 to-blue-500 bg-clip-text text-transparent">Recent Blocks</h2>
             <button className="text-accent hover:text-accent/80 transition-colors duration-200 font-medium">
               View All
             </button>
@@ -153,7 +173,7 @@ function Home() {
 
         <div className="dashboard-card">
           <div className="flex justify-between items-center mb-6">
-            <h2 className="text-xl font-semibold text-text-primary">Recent Transactions</h2>
+            <h2 className="text-xl font-semibold bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent">Recent Transactions</h2>
             <button className="text-accent hover:text-accent/80 transition-colors duration-200 font-medium">
               View All
             </button>
