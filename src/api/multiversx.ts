@@ -44,21 +44,20 @@ export interface ValidatorResponse {
 
 export interface TransactionDetails {
   hash: string;
-  sender: string;
-  receiver: string;
-  value: string;
-  timestamp: number;
   status: string;
+  timestamp: number;
+  sender: string;
+  senderShard: number;
+  receiver: string;
+  receiverShard: number;
+  value: string;
+  fee: string;
+  gasPrice: string;
   gasLimit: number;
-  gasPrice: number;
   gasUsed: number;
   miniBlockHash: string;
   nonce: number;
-  receiverShard: number;
   round: number;
-  senderShard: number;
-  signature: string;
-  fee: string;
   function?: string;
   action?: string;
   data?: string;
@@ -103,20 +102,35 @@ export async function getBlockHeight() {
   }
 }
 
-export async function getTotalTransactions() {
+export async function getTotalTransactions(): Promise<TransactionStats> {
   try {
+    console.log('Buscando estatísticas de transações...');
     const res = await fetch(`${BASE_URL}/stats`);
-    if (!res.ok) throw new Error("Failed to fetch transactions count");
+    
+    if (!res.ok) {
+      console.error('Erro ao buscar estatísticas:', res.status, res.statusText);
+      throw new Error("Falha ao buscar estatísticas");
+    }
+
     const data = await res.json();
-    console.log('Transactions count data:', data);
+    console.log('Dados de estatísticas recebidos:', data);
+
     return {
-      totalProcessed: data.transactions,
-      last24h: data.transactions24h || 0
+      totalTransactions: data.transactions || 0,
+      averageBlockTime: data.blockTime || 6
     };
   } catch (error) {
-    console.error('Error fetching transactions:', error);
-    return { totalProcessed: 0, last24h: 0 };
+    console.error('Erro ao buscar estatísticas:', error);
+    return {
+      totalTransactions: 0,
+      averageBlockTime: 6
+    };
   }
+}
+
+interface TransactionStats {
+  totalTransactions: number;
+  averageBlockTime: number;
 }
 
 export async function getTotalAccounts() {
@@ -154,20 +168,32 @@ export async function getValidators() {
 
 export async function getLatestTransactions(size = 4) {
   try {
+    console.log('Buscando transações recentes...');
     const res = await fetch(`${BASE_URL}/transactions?size=${size}&withScResults=true`);
-    if (!res.ok) throw new Error("Failed to fetch transactions");
+    
+    if (!res.ok) {
+      console.error('Erro ao buscar transações:', res.status, res.statusText);
+      throw new Error("Falha ao buscar transações");
+    }
+
     const data = await res.json();
-    console.log('Latest transactions data:', data);
+    console.log('Dados das transações recebidos:', data);
+
+    if (!Array.isArray(data)) {
+      console.error('Dados recebidos não são um array:', data);
+      return [];
+    }
+
     return data.map((tx: any) => ({
       hash: tx.txHash || tx.hash,
       from: tx.sender || tx.from,
       to: tx.receiver || tx.to,
-      value: tx.value,
-      timestamp: tx.timestamp,
+      value: tx.value || '0',
+      timestamp: tx.timestamp || Date.now() / 1000,
       status: tx.status || 'success'
     }));
   } catch (error) {
-    console.error('Error fetching transactions:', error);
+    console.error('Erro ao buscar transações:', error);
     return [];
   }
 }
@@ -178,39 +204,44 @@ export async function getBlockByHash(hash: string) {
   return res.json();
 }
 
-export async function getTransactionByHash(hash: string) {
+export async function getTransactionByHash(hash: string): Promise<TransactionDetails> {
   try {
-    const res = await fetch(`${BASE_URL}/transactions/${hash}?withScResults=true`);
-    if (!res.ok) throw new Error("Failed to fetch transaction details");
-    const data = await res.json();
-    console.log('Transaction data:', data);
+    console.log('Buscando transação com hash:', hash);
+    const res = await fetch(`${BASE_URL}/transactions/${hash}`);
     
+    if (!res.ok) {
+      console.error('Erro ao buscar transação:', res.status, res.statusText);
+      throw new Error("Falha ao buscar transação");
+    }
+
+    const data = await res.json();
+    console.log('Dados da transação recebidos:', data);
+
     return {
       hash: data.txHash || data.hash,
+      status: data.status || 'pending',
+      timestamp: data.timestamp || Date.now() / 1000,
       sender: data.sender,
+      senderShard: data.senderShard || 1,
       receiver: data.receiver,
-      value: data.value,
-      timestamp: data.timestamp,
-      status: data.status,
-      gasLimit: data.gasLimit,
-      gasPrice: data.gasPrice,
-      gasUsed: data.gasUsed,
-      miniBlockHash: data.miniBlockHash,
-      nonce: data.nonce,
-      receiverShard: data.receiverShard,
-      round: data.round,
-      senderShard: data.senderShard,
-      signature: data.signature,
-      fee: data.fee,
-      function: data.function || '',
-      action: data.action || '',
-      data: data.data || '',
+      receiverShard: data.receiverShard || 1,
+      value: data.value || '0',
+      fee: data.fee || '0',
+      gasPrice: data.gasPrice || '0',
+      gasLimit: data.gasLimit || 0,
+      gasUsed: data.gasUsed || 0,
+      miniBlockHash: data.miniBlockHash || '',
+      nonce: data.nonce || 0,
+      round: data.round || 0,
+      function: data.function,
+      action: data.action,
+      data: data.data,
       scResults: data.scResults || [],
       operations: data.operations || [],
       logs: data.logs || { events: [] }
     };
   } catch (error) {
-    console.error('Error fetching transaction:', error);
+    console.error('Erro ao buscar transação:', error);
     throw error;
   }
 }
