@@ -4,7 +4,6 @@ import Home from './pages/Home';
 import Blocks from './pages/Blocks';
 import Transactions from './pages/Transactions';
 import Accounts from './pages/Accounts';
-import Validators from './pages/Validators';
 
 export default function App() {
   return (
@@ -20,7 +19,6 @@ export default function App() {
           <Route path="/transactions/:hash" element={<Transactions />} />
           <Route path="/accounts" element={<Accounts />} />
           <Route path="/accounts/:address" element={<Accounts />} />
-          <Route path="/validators" element={<Validators />} />
         </Routes>
       </main>
       <footer className="bg-black/20 backdrop-blur-md border-t border-white/5 py-6">

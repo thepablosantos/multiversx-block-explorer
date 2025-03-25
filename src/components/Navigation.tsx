@@ -37,12 +37,6 @@ export default function Navigation() {
               >
                 Accounts
               </Link>
-              <Link
-                to="/validators"
-                className={`nav-link tracking-wide ${isActive('/validators') ? 'active' : ''}`}
-              >
-                Validators
-              </Link>
             </div>
           </div>
         </div>

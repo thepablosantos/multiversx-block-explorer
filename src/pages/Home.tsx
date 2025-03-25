@@ -9,6 +9,7 @@ import {
   Block,
   Transaction
 } from "../api/multiversx";
+import { fetchTransactions24h, fetchTotalTransactions } from "../services/api";
 
 function formatTimeAgo(timestamp: number) {
   const seconds = Math.floor((Date.now() - timestamp * 1000) / 1000);
@@ -44,8 +45,14 @@ function Home() {
   });
 
   const { data: txData } = useQuery({
-    queryKey: ["transactionsCount"],
-    queryFn: getTotalTransactions,
+    queryKey: ["totalTransactions"],
+    queryFn: fetchTotalTransactions,
+    refetchInterval: 6000,
+  });
+
+  const { data: tx24hData } = useQuery({
+    queryKey: ["transactions24h"],
+    queryFn: fetchTransactions24h,
     refetchInterval: 6000,
   });
 
@@ -84,7 +91,7 @@ function Home() {
 
   const stats = {
     blockHeight: blockData?.nonce?.toLocaleString() || "...",
-    totalTransactions: txData?.totalProcessed?.toLocaleString() || "...",
+    totalTransactions: txData?.count?.toLocaleString() || "...",
     totalApplications: '10,900',
     developerRewards: '5,817.81 EGLD'
   };
@@ -126,16 +133,14 @@ function Home() {
                 <div className="stat-label">Block Height</div>
               </div>
               <div className="stat-card">
-                <div className="stat-value">
-                  {stats.totalTransactions}
-                </div>
+                <div className="stat-value">{stats.totalTransactions}</div>
                 <div className="stat-label">Total Transactions</div>
-                <div className="text-sm text-accent mt-2 flex items-center">
+                <div className="text-sm text-white mt-2 flex items-center">
                   <span className="flex items-center">
                     <svg className="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 0l-3 3a1 1 0 001.414 1.414L9 9.414V13a1 1 0 102 0V9.414l1.293 1.293a1 1 0 001.414-1.414z" clipRule="evenodd" />
                     </svg>
-                    {txData?.last24h?.toLocaleString() || "0"}
+                    {tx24hData?.count?.toLocaleString() || "0"}
                   </span>
                   <span className="ml-1">today</span>
                 </div>

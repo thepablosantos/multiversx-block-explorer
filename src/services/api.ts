@@ -142,4 +142,27 @@ export const fetchAccountStats = async () => {
     activeAccounts: data.accounts, // A API não fornece este dado específico
     stakingAccounts: data.accounts // A API não fornece este dado específico
   };
+};
+
+export const fetchTransactions24h = async () => {
+  const now = Math.floor(Date.now() / 1000);
+  const yesterday = now - 24 * 60 * 60;
+  
+  const response = await fetch(`${API_URL}/transactions/count?status=success&before=${now}&after=${yesterday}`);
+  if (!response.ok) {
+    throw new Error('Failed to fetch 24h transactions');
+  }
+  const data = await response.json();
+  return data;
+};
+
+export const fetchTotalTransactions = async () => {
+  const response = await fetch(`${API_URL}/stats`);
+  if (!response.ok) {
+    throw new Error('Failed to fetch total transactions');
+  }
+  const data = await response.json();
+  return {
+    count: data.transactions
+  };
 }; 
