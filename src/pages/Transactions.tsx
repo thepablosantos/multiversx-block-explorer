@@ -93,21 +93,35 @@ export default function Transactions() {
 
   // Se tiver um hash, mostra os detalhes da transação
   if (hash) {
-    const transaction = transactions.find(t => t.hash.includes(hash)) || transactions[0];
+    const transaction = transactions.find(t => t.hash.includes(hash));
+
+    if (!transaction) {
+      return (
+        <div className="dashboard-container px-4 py-8">
+          <div className="mb-8">
+            <Link to="/transactions" className="text-accent hover:text-accent/80">← Voltar para Transações</Link>
+            <h1 className="text-2xl font-bold mt-4 text-white">Transação não encontrada</h1>
+          </div>
+          <div className="bg-black/20 backdrop-blur-md rounded-2xl border border-white/5 p-6">
+            <p className="text-white">A transação com o hash {hash} não foi encontrada.</p>
+          </div>
+        </div>
+      );
+    }
 
     return (
       <div className="dashboard-container px-4 py-8">
         <div className="mb-8">
           <Link to="/transactions" className="text-accent hover:text-accent/80">← Voltar para Transações</Link>
-          <h1 className="text-2xl font-bold mt-4">Detalhes da Transação</h1>
+          <h1 className="text-2xl font-bold mt-4 text-white">Detalhes da Transação</h1>
         </div>
 
-        <div className="bg-black bg-opacity-40 backdrop-blur-md rounded-2xl border border-white border-opacity-5 p-6">
+        <div className="bg-black/20 backdrop-blur-md rounded-2xl border border-white/5 p-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-4">
               <div>
                 <div className="text-text-secondary text-sm">Hash</div>
-                <div className="text-text-primary font-medium">{transaction.hash}</div>
+                <div className="text-white font-medium break-all">{transaction.hash}</div>
               </div>
               <div>
                 <div className="text-text-secondary text-sm">Status</div>
@@ -121,25 +135,25 @@ export default function Transactions() {
               </div>
               <div>
                 <div className="text-text-secondary text-sm">Age</div>
-                <div>{transaction.age}</div>
+                <div className="text-white">{transaction.age}</div>
               </div>
             </div>
             <div className="space-y-4">
               <div>
                 <div className="text-text-secondary text-sm">From</div>
-                <Link to={`/accounts/${transaction.from.address}`} className="text-accent hover:text-accent/80">
+                <Link to={`/accounts/${transaction.from.address}`} className="text-accent hover:text-accent/80 break-all">
                   {transaction.from.address}
                 </Link>
               </div>
               <div>
                 <div className="text-text-secondary text-sm">To</div>
-                <Link to={`/accounts/${transaction.to.address}`} className="text-accent hover:text-accent/80">
+                <Link to={`/accounts/${transaction.to.address}`} className="text-accent hover:text-accent/80 break-all">
                   {transaction.to.address}
                 </Link>
               </div>
               <div>
                 <div className="text-text-secondary text-sm">Value</div>
-                <div>{transaction.value.amount.toLocaleString(undefined, {
+                <div className="text-white">{transaction.value.amount.toLocaleString(undefined, {
                   minimumFractionDigits: 2,
                   maximumFractionDigits: 2
                 })} {transaction.value.currency}</div>
@@ -154,7 +168,7 @@ export default function Transactions() {
   return (
     <div className="dashboard-container px-4 py-8">
       <div className="flex justify-between items-center mb-8">
-        <h1 className="text-2xl font-bold">Live Transactions</h1>
+        <h1 className="text-2xl font-bold text-white">Live Transactions</h1>
         <div className="flex items-center space-x-4">
           <div className="flex items-center space-x-2">
             <div className="w-2 h-2 bg-accent rounded-full animate-pulse"></div>
@@ -187,7 +201,7 @@ export default function Transactions() {
         </div>
       </div>
 
-      <div className="bg-black bg-opacity-40 backdrop-blur-md rounded-2xl border border-white border-opacity-5">
+      <div className="bg-black/20 backdrop-blur-md rounded-2xl border border-white/5">
         <table className="blocks-table">
           <thead>
             <tr>
@@ -212,7 +226,7 @@ export default function Transactions() {
                     {tx.hash}
                   </Link>
                 </td>
-                <td>{tx.age}</td>
+                <td className="text-white">{tx.age}</td>
                 <td>
                   <Link to={`/accounts/${tx.from.address}`} className="text-accent hover:text-accent/80">
                     {tx.from.address}
@@ -223,14 +237,13 @@ export default function Transactions() {
                     {tx.to.address}
                   </Link>
                 </td>
-                <td>{tx.shard.from} → {tx.shard.to}</td>
-                <td>
+                <td className="text-white">{tx.shard.from} → {tx.shard.to}</td>
+                <td className="text-white">
                   <div className="flex items-center space-x-2">
-                    <img src="/path/to/contract/icon.png" alt="" className="w-4 h-4" />
                     <span>{tx.method.name}: {tx.method.action}</span>
                   </div>
                 </td>
-                <td>{tx.value.amount.toLocaleString(undefined, {
+                <td className="text-white">{tx.value.amount.toLocaleString(undefined, {
                   minimumFractionDigits: 2,
                   maximumFractionDigits: 2
                 })} {tx.value.currency}</td>
@@ -240,13 +253,13 @@ export default function Transactions() {
         </table>
       </div>
 
-      <div className="pagination">
-        <button className="pagination-item">← Prev</button>
-        <button className="pagination-item active">1</button>
-        <button className="pagination-item">2</button>
+      <div className="pagination mt-6">
+        <button className="pagination-item text-white">← Prev</button>
+        <button className="pagination-item text-white active">1</button>
+        <button className="pagination-item text-white">2</button>
         <span className="text-text-secondary">...</span>
-        <button className="pagination-item">400</button>
-        <button className="pagination-item">Next →</button>
+        <button className="pagination-item text-white">400</button>
+        <button className="pagination-item text-white">Next →</button>
       </div>
     </div>
   );

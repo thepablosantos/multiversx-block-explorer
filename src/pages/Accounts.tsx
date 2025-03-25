@@ -1,86 +1,34 @@
 import { useQuery } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
-
-interface Account {
-  address: string;
-  name?: string;
-  balance: {
-    amount: number;
-    currency: string;
-  };
-  isContract?: boolean;
-}
-
-// Mock data baseado na imagem
-const mockAccounts: Account[] = [
-  {
-    address: 'erd1qqqqqqqqqqqqqpgqd77fnev2k0rwvs4qg2qk0rwvs4qg2qk0rwvs4qxkgk3d',
-    name: 'System: Staking Module',
-    balance: {
-      amount: 14847581.54,
-      currency: 'EGLD'
-    },
-    isContract: true
-  },
-  {
-    address: 'erd1qqqqqqqqqqqqqpgqxkgk3d',
-    name: 'Exchange: Binance Staking',
-    balance: {
-      amount: 3996167.92,
-      currency: 'EGLD'
-    }
-  },
-  {
-    address: 'erd1qqqqqqqqqqqqqpgqd77fnev2k0rwvs4qg2qk0rwvs4q',
-    name: 'Exchange: Upbit',
-    balance: {
-      amount: 743873.21,
-      currency: 'EGLD'
-    }
-  },
-  {
-    address: 'erd1qqqqqqqqqqqqqpgqd77fnev2k0rwvs4qg2q',
-    name: 'Exchange: Bybit',
-    balance: {
-      amount: 317553.72,
-      currency: 'EGLD'
-    }
-  },
-  {
-    address: 'erd1qqqqqqqqqqqqqpgqd77fnev2k0rwvs4qg2qk0rwvs4qg2q',
-    name: 'ESDT: WrappedEGLD Contract Shard 0',
-    balance: {
-      amount: 300495.25,
-      currency: 'EGLD'
-    },
-    isContract: true
-  }
-];
-
-// Gera mais contas mock para ter 25 no total
-for (let i = mockAccounts.length; i < 25; i++) {
-  mockAccounts.push({
-    address: `erd1${Math.random().toString(36).substring(2, 15)}`,
-    balance: {
-      amount: Math.random() * 100000,
-      currency: 'EGLD'
-    }
-  });
-}
+import { useState } from 'react';
+import { fetchAccounts, fetchNetworkStats } from '../services/api';
+import { truncateHash, formatNumber } from '../utils/formatting';
 
 export default function Accounts() {
-  // Auto atualização a cada 6 segundos
-  const { data: accounts = mockAccounts } = useQuery({
-    queryKey: ['accounts'],
-    queryFn: () => Promise.resolve(mockAccounts),
+  const [currentPage, setCurrentPage] = useState(1);
+  const ITEMS_PER_PAGE = 25;
+
+  const { data: stats } = useQuery({
+    queryKey: ['network-stats'],
+    queryFn: fetchNetworkStats,
     refetchInterval: 6000
   });
 
-  const stats = {
-    totalAccounts: '6,961,673',
-    usersStaking: '108,311',
-    accountsActiveToday: '45,531'
-  };
+  const { data: accountsData } = useQuery({
+    queryKey: ['accounts', currentPage],
+    queryFn: () => fetchAccounts(currentPage, ITEMS_PER_PAGE),
+    refetchInterval: 6000
+  });
+
+  const totalPages = accountsData?.totalPages || 1;
+  const pageNumbers = [];
+  for (let i = 1; i <= Math.min(5, totalPages); i++) {
+    pageNumbers.push(i);
+  }
+  if (totalPages > 5) {
+    pageNumbers.push('...');
+    pageNumbers.push(totalPages);
+  }
 
   return (
     <div className="dashboard-container px-4 py-8">
@@ -88,23 +36,29 @@ export default function Accounts() {
         <h1 className="text-2xl font-bold">Accounts</h1>
         <input
           type="text"
-          placeholder="Search 6,961,673 accounts..."
+          placeholder="Search by address..."
           className="search-bar max-w-xl"
         />
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
         <div className="stat-card">
-          <div className="stat-value text-accent">{stats.totalAccounts}</div>
+          <div className="stat-value text-white">
+            {stats?.accounts?.toLocaleString() || '0'}
+          </div>
           <div className="stat-label">Total Accounts</div>
         </div>
         <div className="stat-card">
-          <div className="stat-value text-accent">{stats.usersStaking}</div>
-          <div className="stat-label">Users Staking</div>
+          <div className="stat-value text-white">
+            {stats?.accounts?.toLocaleString() || '0'}
+          </div>
+          <div className="stat-label">Active Accounts</div>
         </div>
         <div className="stat-card">
-          <div className="stat-value text-accent">{stats.accountsActiveToday}</div>
-          <div className="stat-label">Accounts Active Today</div>
+          <div className="stat-value text-white">
+            {stats?.accounts?.toLocaleString() || '0'}
+          </div>
+          <div className="stat-label">Staking Accounts</div>
         </div>
       </div>
 
@@ -114,32 +68,19 @@ export default function Accounts() {
             <tr>
               <th>Address</th>
               <th className="text-right">Balance</th>
+              <th className="text-right">Transactions</th>
             </tr>
           </thead>
           <tbody>
-            {accounts.map((account) => (
+            {accountsData?.accounts.map((account: any) => (
               <tr key={account.address}>
                 <td>
-                  <div className="flex items-center space-x-2">
-                    {account.isContract && (
-                      <span className="text-accent text-sm">⚡</span>
-                    )}
-                    <Link 
-                      to={`/accounts/${account.address}`}
-                      className="text-accent hover:text-accent/80"
-                    >
-                      {account.name || account.address}
-                    </Link>
-                  </div>
+                  <Link to={`/accounts/${account.address}`} className="text-accent hover:text-accent/80">
+                    {truncateHash(account.address)}
+                  </Link>
                 </td>
-                <td className="text-right">
-                  <div className="font-medium">
-                    ≈ {account.balance.amount.toLocaleString(undefined, {
-                      minimumFractionDigits: 2,
-                      maximumFractionDigits: 2
-                    })} {account.balance.currency}
-                  </div>
-                </td>
+                <td className="text-right">{formatNumber(Number(account.balance) / 1e18)} EGLD</td>
+                <td className="text-right">{account.txCount}</td>
               </tr>
             ))}
           </tbody>
@@ -147,12 +88,29 @@ export default function Accounts() {
       </div>
 
       <div className="pagination">
-        <button className="pagination-item">← Prev</button>
-        <button className="pagination-item active">1</button>
-        <button className="pagination-item">2</button>
-        <span className="text-text-secondary">...</span>
-        <button className="pagination-item">400</button>
-        <button className="pagination-item">Next →</button>
+        <button 
+          className="pagination-item" 
+          onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+          disabled={currentPage === 1}
+        >
+          ← Prev
+        </button>
+        {pageNumbers.map((pageNum, idx) => (
+          <button
+            key={idx}
+            className={`pagination-item ${pageNum === currentPage ? 'active' : ''}`}
+            onClick={() => typeof pageNum === 'number' && setCurrentPage(pageNum)}
+          >
+            {pageNum}
+          </button>
+        ))}
+        <button 
+          className="pagination-item"
+          onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+          disabled={currentPage === totalPages}
+        >
+          Next →
+        </button>
       </div>
     </div>
   );

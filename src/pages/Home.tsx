@@ -1,11 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   getBlockHeight,
   getTotalTransactions,
-  getTotalAccounts,
-  getValidators,
   getLatestBlocks,
   getLatestTransactions,
   Block,
@@ -36,6 +34,7 @@ function truncateHash(hash: string) {
 }
 
 function Home() {
+  const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
 
   const { data: blockData } = useQuery({
@@ -50,29 +49,45 @@ function Home() {
     refetchInterval: 6000,
   });
 
-  const { data: accountsData } = useQuery({
-    queryKey: ["accountsCount"],
-    queryFn: getTotalAccounts,
-    refetchInterval: 6000,
-  });
-
-  const { data: validatorsData } = useQuery({
-    queryKey: ["validators"],
-    queryFn: getValidators,
-    refetchInterval: 6000,
-  });
-
   const { data: latestBlocks } = useQuery({
     queryKey: ["latestBlocks"],
-    queryFn: () => getLatestBlocks(4),
+    queryFn: () => getLatestBlocks(6),
     refetchInterval: 6000,
   });
 
   const { data: latestTransactions } = useQuery({
     queryKey: ["latestTransactions"],
-    queryFn: () => getLatestTransactions(4),
+    queryFn: () => getLatestTransactions(6),
     refetchInterval: 6000,
   });
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!searchQuery) return;
+
+    if (/^\d+$/.test(searchQuery)) {
+      navigate(`/blocks/by-nonce/${searchQuery}`);
+    }
+    else if (/^[a-fA-F0-9]{64}$/.test(searchQuery)) {
+      navigate(`/transactions/${searchQuery}`);
+    }
+    else if (searchQuery.startsWith('erd1')) {
+      navigate(`/accounts/${searchQuery}`);
+    }
+    else if (/^[a-fA-F0-9]{64}$/.test(searchQuery)) {
+      navigate(`/blocks/${searchQuery}`);
+    }
+    else {
+      navigate(`/accounts/${searchQuery}`);
+    }
+  };
+
+  const stats = {
+    blockHeight: blockData?.nonce?.toLocaleString() || "...",
+    totalTransactions: txData?.totalProcessed?.toLocaleString() || "...",
+    totalApplications: '10,900',
+    developerRewards: '5,817.81 EGLD'
+  };
 
   return (
     <div className="p-8 space-y-8">
@@ -84,7 +99,7 @@ function Home() {
                 Degen Sentinels
               </h1>
               
-              <div className="relative w-1/2">
+              <form onSubmit={handleSearch} className="relative w-1/2">
                 <input
                   type="text"
                   placeholder="Search by Address / Txn Hash / Block / Token"
@@ -92,24 +107,27 @@ function Home() {
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                 />
-                <button className="absolute right-6 top-1/2 -translate-y-1/2 text-text-secondary hover:text-accent transition-colors duration-200">
+                <button 
+                  type="submit"
+                  className="absolute right-6 top-1/2 -translate-y-1/2 text-text-secondary hover:text-accent transition-colors duration-200"
+                >
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                   </svg>
                 </button>
-              </div>
+              </form>
             </div>
 
-            <div className="stats-container">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
               <div className="stat-card">
                 <div className="stat-value">
-                  {blockData?.nonce?.toLocaleString() || "..."}
+                  {stats.blockHeight}
                 </div>
                 <div className="stat-label">Block Height</div>
               </div>
               <div className="stat-card">
                 <div className="stat-value">
-                  {txData?.totalProcessed?.toLocaleString() || "..."}
+                  {stats.totalTransactions}
                 </div>
                 <div className="stat-label">Total Transactions</div>
                 <div className="text-sm text-accent mt-2 flex items-center">
@@ -124,24 +142,15 @@ function Home() {
               </div>
               <div className="stat-card">
                 <div className="stat-value">
-                  {accountsData?.totalAccounts?.toLocaleString() || "..."}
+                  {stats.totalApplications}
                 </div>
-                <div className="stat-label">Total Accounts</div>
-                <div className="text-sm text-accent mt-2 flex items-center">
-                  <span className="flex items-center">
-                    <svg className="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 0l-3 3a1 1 0 001.414 1.414L9 9.414V13a1 1 0 102 0V9.414l1.293 1.293a1 1 0 001.414-1.414z" clipRule="evenodd" />
-                    </svg>
-                    {accountsData?.activeAccounts?.toLocaleString() || "0"}
-                  </span>
-                  <span className="ml-1">active today</span>
-                </div>
+                <div className="stat-label">Total Applications Deployed</div>
               </div>
               <div className="stat-card">
                 <div className="stat-value">
-                  {validatorsData?.totalValidators?.toString() || "..."}
+                  {stats.developerRewards}
                 </div>
-                <div className="stat-label">Validators</div>
+                <div className="stat-label">Total Developer Rewards</div>
               </div>
             </div>
           </div>
