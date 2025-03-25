@@ -17,52 +17,44 @@ interface Block {
 }
 
 // Mock data baseado na imagem
-const mockBlocks: Block[] = [
-  {
-    nonce: 24458975,
-    age: '4 secs',
-    txCount: 14,
-    shard: 'Shard 0',
-    size: '4.81 kB',
-    gasUsed: 76653235,
-    gasLimit: 3000000000,
-    hash: '5a1d2f94341...616fd9770e3',
-    leader: {
-      name: 'Valid Blocks',
-      icon: '🔵'
-    }
-  },
-  {
-    nonce: 24449107,
-    age: '4 secs',
-    txCount: 22,
-    shard: 'Shard 1',
-    size: '11.19 kB',
-    gasUsed: 129656102,
-    gasLimit: 3000000000,
-    hash: '4f3e3c9d443...e6ffa61d73cd',
-    leader: {
-      name: 'Forbole',
-      icon: '🔴'
-    }
-  },
-  {
-    nonce: 24459638,
-    age: '4 secs',
-    txCount: 10,
-    shard: 'Shard 2',
-    size: '4.32 kB',
-    gasUsed: 26450515,
-    gasLimit: 3000000000,
-    hash: '8b4f668a483...52962b0271f',
-    leader: {
-      name: 'Ofero Staking',
-      icon: '⚪'
-    }
+const generateMockBlocks = (count: number): Block[] => {
+  const blocks: Block[] = [];
+  const shards = ['Shard 0', 'Shard 1', 'Shard 2'];
+  const leaders = [
+    { name: 'Valid Blocks', icon: '🔵' },
+    { name: 'Forbole', icon: '🔴' },
+    { name: 'Ofero Staking', icon: '⚪' }
+  ];
+
+  for (let i = 0; i < count; i++) {
+    const shard = shards[Math.floor(Math.random() * shards.length)];
+    const leader = leaders[Math.floor(Math.random() * leaders.length)];
+    const nonce = 24458975 - i;
+    
+    blocks.push({
+      nonce,
+      age: '4 secs',
+      txCount: Math.floor(Math.random() * 30),
+      shard,
+      size: `${(Math.random() * 10).toFixed(2)} kB`,
+      gasUsed: Math.floor(Math.random() * 200000000),
+      gasLimit: 3000000000,
+      hash: `${Math.random().toString(36).substring(2, 10)}...${Math.random().toString(36).substring(2, 10)}`,
+      leader
+    });
   }
-];
+
+  return blocks;
+};
 
 export default function Blocks() {
+  // Auto atualização a cada 6 segundos
+  const { data: blocks = [] } = useQuery({
+    queryKey: ['blocks'],
+    queryFn: () => Promise.resolve(generateMockBlocks(25)),
+    refetchInterval: 6000
+  });
+
   // Mock stats
   const stats = {
     blockHeight: '97,811,029',
@@ -116,7 +108,7 @@ export default function Blocks() {
             </tr>
           </thead>
           <tbody>
-            {mockBlocks.map((block) => (
+            {blocks.map((block) => (
               <tr key={block.hash}>
                 <td>{block.nonce}</td>
                 <td>{block.age}</td>
