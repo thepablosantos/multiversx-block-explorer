@@ -18,19 +18,29 @@
 }
 
 @layer base {
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
   body {
-    @apply bg-main-bg text-text-primary min-h-screen;
+    @apply bg-main-bg text-text-primary min-h-screen w-full overflow-x-hidden;
     background: radial-gradient(circle at 50% -20%, #1a1d23, #0a0b0d 50%);
+  }
+
+  #root {
+    @apply min-h-screen w-full;
   }
 }
 
 @layer components {
   .dashboard-container {
-    @apply max-w-7xl mx-auto;
+    @apply w-full;
   }
 
   .header-section {
-    @apply relative overflow-hidden rounded-2xl bg-card-bg bg-opacity-50 backdrop-blur-md p-12 mb-8;
+    @apply relative overflow-hidden bg-card-bg bg-opacity-50 backdrop-blur-md p-12;
   }
 
   .header-section::before {
@@ -51,7 +61,7 @@
   }
 
   .stat-card {
-    @apply bg-black bg-opacity-40 backdrop-blur-md p-6 rounded-2xl border border-white border-opacity-5 hover:border-opacity-10 transition-all duration-300;
+    @apply bg-black bg-opacity-20 backdrop-blur-md p-6 rounded-2xl;
   }
 
   .stat-value {
@@ -63,11 +73,11 @@
   }
 
   .dashboard-card {
-    @apply bg-black bg-opacity-40 backdrop-blur-md p-6 rounded-2xl border border-white border-opacity-5;
+    @apply bg-black bg-opacity-20 backdrop-blur-md p-6 rounded-2xl;
   }
 
   .search-bar {
-    @apply w-full bg-black bg-opacity-40 backdrop-blur-md border border-white border-opacity-5 rounded-2xl py-4 px-6 text-text-primary focus:outline-none focus:ring-2 ring-accent ring-opacity-20 focus:border-white focus:border-opacity-10 transition-all duration-300;
+    @apply w-full bg-black bg-opacity-20 backdrop-blur-md rounded-2xl py-4 px-6 text-text-primary focus:outline-none focus:ring-2 ring-accent ring-opacity-20 transition-all duration-300;
   }
 
   .search-bar::placeholder {
@@ -75,11 +85,11 @@
   }
 
   .recent-card {
-    @apply bg-black bg-opacity-30 backdrop-blur-sm p-4 rounded-xl border border-white border-opacity-5 hover:border-opacity-10 transition-all duration-300;
+    @apply bg-black bg-opacity-20 backdrop-blur-md p-4 rounded-xl hover:bg-opacity-30 transition-all duration-300;
   }
 
   .nav-container {
-    @apply bg-transparent backdrop-blur-md border-b border-white border-opacity-5;
+    @apply bg-transparent backdrop-blur-md;
   }
 
   .nav-link {
@@ -133,11 +143,11 @@
   }
 
   .blocks-table th {
-    @apply text-left py-4 px-4 text-text-secondary text-sm font-medium border-b border-white border-opacity-5;
+    @apply text-left py-4 px-4 text-text-secondary text-sm font-medium;
   }
 
   .blocks-table td {
-    @apply py-4 px-4 border-b border-white border-opacity-5;
+    @apply py-4 px-4;
   }
 
   .blocks-table tr:hover {

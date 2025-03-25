@@ -97,7 +97,7 @@ function Home() {
   };
 
   return (
-    <div className="p-8 space-y-8">
+    <div className="space-y-8">
       <div className="dashboard-container">
         <div className="header-section">
           <div className="header-content">
@@ -125,14 +125,12 @@ function Home() {
               </form>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-              <div className="stat-card">
-                <div className="stat-value">
-                  {stats.blockHeight}
-                </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              <div className="stat-card border-0">
+                <div className="stat-value">{stats.blockHeight}</div>
                 <div className="stat-label">Block Height</div>
               </div>
-              <div className="stat-card">
+              <div className="stat-card border-0">
                 <div className="stat-value">{stats.totalTransactions}</div>
                 <div className="stat-label">Total Transactions</div>
                 <div className="text-sm text-white mt-2 flex items-center">
@@ -145,16 +143,12 @@ function Home() {
                   <span className="ml-1">today</span>
                 </div>
               </div>
-              <div className="stat-card">
-                <div className="stat-value">
-                  {stats.totalApplications}
-                </div>
+              <div className="stat-card border-0">
+                <div className="stat-value">{stats.totalApplications}</div>
                 <div className="stat-label">Total Applications Deployed</div>
               </div>
-              <div className="stat-card">
-                <div className="stat-value">
-                  {stats.developerRewards}
-                </div>
+              <div className="stat-card border-0">
+                <div className="stat-value">{stats.developerRewards}</div>
                 <div className="stat-label">Total Developer Rewards</div>
               </div>
             </div>
