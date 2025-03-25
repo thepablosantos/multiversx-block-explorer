@@ -97,7 +97,7 @@ function Home() {
   };
 
   return (
-    <div className="space-y-8">
+    <div className="p-8">
       <div className="dashboard-container">
         <div className="header-section">
           <div className="header-content">

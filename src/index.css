@@ -24,23 +24,30 @@
     box-sizing: border-box;
   }
 
+  html {
+    background: var(--color-main-bg);
+  }
+
   body {
-    @apply bg-main-bg text-text-primary min-h-screen w-full overflow-x-hidden;
-    background: radial-gradient(circle at 50% -20%, #1a1d23, #0a0b0d 50%);
+    @apply text-text-primary min-h-screen w-full;
+    background: radial-gradient(circle at 50% -20%, #1a1d23, #0a0b0d 50%) no-repeat fixed;
+    background-size: 100% 100%;
+    overflow-x: hidden;
   }
 
   #root {
     @apply min-h-screen w-full;
+    background: transparent;
   }
 }
 
 @layer components {
   .dashboard-container {
-    @apply w-full;
+    @apply max-w-7xl mx-auto;
   }
 
   .header-section {
-    @apply relative overflow-hidden bg-card-bg bg-opacity-50 backdrop-blur-md p-12;
+    @apply relative overflow-hidden rounded-2xl bg-card-bg bg-opacity-50 backdrop-blur-md p-12 mb-8;
   }
 
   .header-section::before {
