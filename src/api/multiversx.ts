@@ -1,3 +1,6 @@
+export const API_URL = 'https://api.multiversx.com';
+export const API_URL_V1 = 'https://api.multiversx.com/transactions';
+
 const BASE_URL = "https://api.multiversx.com";
 
 export interface Block {
@@ -37,6 +40,33 @@ export interface ValidatorResponse {
   totalValidators: number;
   activeValidators: number;
   queueSize: number;
+}
+
+export interface TransactionDetails {
+  hash: string;
+  sender: string;
+  receiver: string;
+  value: string;
+  timestamp: number;
+  status: string;
+  gasLimit: number;
+  gasPrice: number;
+  gasUsed: number;
+  miniBlockHash: string;
+  nonce: number;
+  receiverShard: number;
+  round: number;
+  senderShard: number;
+  signature: string;
+  fee: string;
+  function?: string;
+  action?: string;
+  data?: string;
+  scResults?: any[];
+  operations?: any[];
+  logs?: {
+    events: any[];
+  };
 }
 
 export async function getLatestBlocks(size = 5) {
@@ -149,9 +179,40 @@ export async function getBlockByHash(hash: string) {
 }
 
 export async function getTransactionByHash(hash: string) {
-  const res = await fetch(`${BASE_URL}/transactions/${hash}`);
-  if (!res.ok) throw new Error("Failed to fetch transaction details");
-  return res.json();
+  try {
+    const res = await fetch(`${BASE_URL}/transactions/${hash}?withScResults=true`);
+    if (!res.ok) throw new Error("Failed to fetch transaction details");
+    const data = await res.json();
+    console.log('Transaction data:', data);
+    
+    return {
+      hash: data.txHash || data.hash,
+      sender: data.sender,
+      receiver: data.receiver,
+      value: data.value,
+      timestamp: data.timestamp,
+      status: data.status,
+      gasLimit: data.gasLimit,
+      gasPrice: data.gasPrice,
+      gasUsed: data.gasUsed,
+      miniBlockHash: data.miniBlockHash,
+      nonce: data.nonce,
+      receiverShard: data.receiverShard,
+      round: data.round,
+      senderShard: data.senderShard,
+      signature: data.signature,
+      fee: data.fee,
+      function: data.function || '',
+      action: data.action || '',
+      data: data.data || '',
+      scResults: data.scResults || [],
+      operations: data.operations || [],
+      logs: data.logs || { events: [] }
+    };
+  } catch (error) {
+    console.error('Error fetching transaction:', error);
+    throw error;
+  }
 }
 
 export async function getAccountByAddress(address: string) {

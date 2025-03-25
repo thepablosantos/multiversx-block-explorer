@@ -2,23 +2,28 @@ import { useParams, Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { getTransactionByHash } from "../api/multiversx";
 import { formatTimeAgo } from "../utils/formatting";
+import { TransactionDetails } from "../api/multiversx";
 
 export default function TransactionDetail() {
   const { hash } = useParams();
 
-  const { data: transaction, isLoading, isError } = useQuery({
+  const { data: transaction, isLoading, isError, error } = useQuery<TransactionDetails, Error>({
     queryKey: ["transaction", hash],
     queryFn: () => getTransactionByHash(hash!),
     enabled: !!hash,
+    gcTime: 5 * 60 * 1000, // Keep in garbage collection for 5 minutes
+    staleTime: 30000, // Consider data fresh for 30 seconds
     retry: 1
   });
+
+  console.log('Transaction query state:', { hash, isLoading, isError, error, transaction }); // Add logging
 
   if (isLoading) {
     return (
       <div className="dashboard-container px-4 py-8">
         <div className="mb-8">
-          <Link to="/transactions" className="text-accent hover:text-accent/80">← Back to Transactions</Link>
-          <h1 className="text-2xl font-bold mt-4 text-white">Loading Transaction...</h1>
+          <Link to="/transactions" className="text-accent hover:text-accent/80">← Voltar para Transações</Link>
+          <h1 className="text-2xl font-bold mt-4 text-white">Carregando Transação...</h1>
         </div>
         <div className="bg-black/20 backdrop-blur-md rounded-2xl border border-white/5 p-6">
           <div className="animate-pulse space-y-4">
@@ -35,11 +40,16 @@ export default function TransactionDetail() {
     return (
       <div className="dashboard-container px-4 py-8">
         <div className="mb-8">
-          <Link to="/transactions" className="text-accent hover:text-accent/80">← Back to Transactions</Link>
-          <h1 className="text-2xl font-bold mt-4 text-white">Transaction Not Found</h1>
+          <Link to="/transactions" className="text-accent hover:text-accent/80">← Voltar para Transações</Link>
+          <h1 className="text-2xl font-bold mt-4 text-white">Transação não encontrada</h1>
         </div>
         <div className="bg-black/20 backdrop-blur-md rounded-2xl border border-white/5 p-6">
-          <p className="text-white">The transaction with hash {hash} was not found.</p>
+          <p className="text-white">A transação com o hash {hash} não foi encontrada.</p>
+          {error && (
+            <p className="text-red-500 mt-2">
+              Erro: {error instanceof Error ? error.message : 'Erro desconhecido'}
+            </p>
+          )}
         </div>
       </div>
     );
@@ -97,7 +107,7 @@ export default function TransactionDetail() {
               <div className="text-white">{Number(transaction.value) / Math.pow(10, 18)} EGLD</div>
             </div>
             <div>
-              <div className="text-text-secondary text-sm">Timestamp</div>
+              <div className="text-text-secondary text-sm">Age</div>
               <div className="text-white">{formatTimeAgo(transaction.timestamp)}</div>
             </div>
             <div>
@@ -127,6 +137,24 @@ export default function TransactionDetail() {
           </div>
         </div>
 
+        {(transaction.function || transaction.action) && (
+          <div className="bg-black/20 backdrop-blur-md rounded-2xl border border-white/5 p-6">
+            <h2 className="text-lg font-semibold text-white mb-4">Smart Contract Data</h2>
+            {transaction.function && (
+              <div className="mb-4">
+                <div className="text-text-secondary text-sm">Function</div>
+                <div className="text-white font-mono bg-black/20 p-2 rounded mt-1">{transaction.function}</div>
+              </div>
+            )}
+            {transaction.action && (
+              <div>
+                <div className="text-text-secondary text-sm">Action</div>
+                <div className="text-white">{transaction.action}</div>
+              </div>
+            )}
+          </div>
+        )}
+
         <div className="bg-black/20 backdrop-blur-md rounded-2xl border border-white/5 p-6">
           <h2 className="text-lg font-semibold text-white mb-4">Block Info</h2>
           <div>
@@ -134,6 +162,36 @@ export default function TransactionDetail() {
             <div className="text-white break-all">{transaction.miniBlockHash}</div>
           </div>
         </div>
+
+        {(transaction.scResults?.length || transaction.logs?.events?.length) && (
+          <div className="bg-black/20 backdrop-blur-md rounded-2xl border border-white/5 p-6">
+            <h2 className="text-lg font-semibold text-white mb-4">Results & Logs</h2>
+            {transaction.scResults?.length > 0 && (
+              <div className="mb-4">
+                <div className="text-text-secondary text-sm mb-2">Smart Contract Results</div>
+                <div className="space-y-2">
+                  {transaction.scResults.map((result: any, index: number) => (
+                    <div key={index} className="bg-black/20 p-3 rounded">
+                      <pre className="text-white text-sm overflow-x-auto">{JSON.stringify(result, null, 2)}</pre>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+            {transaction.logs?.events?.length > 0 && (
+              <div>
+                <div className="text-text-secondary text-sm mb-2">Events</div>
+                <div className="space-y-2">
+                  {transaction.logs.events.map((event: any, index: number) => (
+                    <div key={index} className="bg-black/20 p-3 rounded">
+                      <pre className="text-white text-sm overflow-x-auto">{JSON.stringify(event, null, 2)}</pre>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

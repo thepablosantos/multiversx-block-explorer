@@ -3,6 +3,7 @@ import Navigation from './components/Navigation';
 import Home from './pages/Home';
 import Blocks from './pages/Blocks';
 import Transactions from './pages/Transactions';
+import TransactionDetail from './pages/TransactionDetail';
 import Accounts from './pages/Accounts';
 
 export default function App() {
@@ -16,7 +17,7 @@ export default function App() {
           <Route path="/blocks/:hash" element={<Blocks />} />
           <Route path="/blocks/by-nonce/:nonce" element={<Blocks />} />
           <Route path="/transactions" element={<Transactions />} />
-          <Route path="/transactions/:hash" element={<Transactions />} />
+          <Route path="/transactions/:hash" element={<TransactionDetail />} />
           <Route path="/accounts" element={<Accounts />} />
           <Route path="/accounts/:address" element={<Accounts />} />
         </Routes>
