@@ -17,6 +17,9 @@ export default {
         'success': 'var(--color-success)',
         'error': 'var(--color-error)',
         'warning': 'var(--color-warning)',
+        'gradient-start': 'var(--gradient-start)',
+        'gradient-mid': 'var(--gradient-mid)',
+        'gradient-end': 'var(--gradient-end)',
       },
       backgroundColor: {
         'card-hover': 'var(--card-hover)',
@@ -42,6 +45,15 @@ export default {
       },
       backdropBlur: {
         'sm': '8px',
+        'md': '12px',
+      },
+      opacity: {
+        '15': '0.15',
+        '35': '0.35',
+      },
+      ringOpacity: {
+        '15': '0.15',
+        '20': '0.20',
       },
     },
   },
