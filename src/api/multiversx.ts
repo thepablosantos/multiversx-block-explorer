@@ -104,23 +104,23 @@ export async function getBlockHeight() {
 
 export async function getTotalTransactions(): Promise<TransactionStats> {
   try {
-    console.log('Buscando estatísticas de transações...');
+    console.log('Fetching transaction statistics...');
     const res = await fetch(`${BASE_URL}/stats`);
     
     if (!res.ok) {
-      console.error('Erro ao buscar estatísticas:', res.status, res.statusText);
-      throw new Error("Falha ao buscar estatísticas");
+      console.error('Error fetching statistics:', res.status, res.statusText);
+      throw new Error("Failed to fetch statistics");
     }
 
     const data = await res.json();
-    console.log('Dados de estatísticas recebidos:', data);
+    console.log('Statistics data received:', data);
 
     return {
       totalTransactions: data.transactions || 0,
       averageBlockTime: data.blockTime || 6
     };
   } catch (error) {
-    console.error('Erro ao buscar estatísticas:', error);
+    console.error('Error fetching statistics:', error);
     return {
       totalTransactions: 0,
       averageBlockTime: 6
@@ -168,19 +168,19 @@ export async function getValidators() {
 
 export async function getLatestTransactions(size = 4) {
   try {
-    console.log('Buscando transações recentes...');
+    console.log('Fetching recent transactions...');
     const res = await fetch(`${BASE_URL}/transactions?size=${size}&withScResults=true`);
     
     if (!res.ok) {
-      console.error('Erro ao buscar transações:', res.status, res.statusText);
-      throw new Error("Falha ao buscar transações");
+      console.error('Error fetching transactions:', res.status, res.statusText);
+      throw new Error("Failed to fetch transactions");
     }
 
     const data = await res.json();
-    console.log('Dados das transações recebidos:', data);
+    console.log('Transaction data received:', data);
 
     if (!Array.isArray(data)) {
-      console.error('Dados recebidos não são um array:', data);
+      console.error('Received data is not an array:', data);
       return [];
     }
 
@@ -193,7 +193,7 @@ export async function getLatestTransactions(size = 4) {
       status: tx.status || 'success'
     }));
   } catch (error) {
-    console.error('Erro ao buscar transações:', error);
+    console.error('Error fetching transactions:', error);
     return [];
   }
 }
@@ -206,16 +206,16 @@ export async function getBlockByHash(hash: string) {
 
 export async function getTransactionByHash(hash: string): Promise<TransactionDetails> {
   try {
-    console.log('Buscando transação com hash:', hash);
+    console.log('Fetching transaction with hash:', hash);
     const res = await fetch(`${BASE_URL}/transactions/${hash}`);
     
     if (!res.ok) {
-      console.error('Erro ao buscar transação:', res.status, res.statusText);
-      throw new Error("Falha ao buscar transação");
+      console.error('Error fetching transaction:', res.status, res.statusText);
+      throw new Error("Failed to fetch transaction");
     }
 
     const data = await res.json();
-    console.log('Dados da transação recebidos:', data);
+    console.log('Transaction data received:', data);
 
     return {
       hash: data.txHash || data.hash,
@@ -241,7 +241,7 @@ export async function getTransactionByHash(hash: string): Promise<TransactionDet
       logs: data.logs || { events: [] }
     };
   } catch (error) {
-    console.error('Erro ao buscar transação:', error);
+    console.error('Error fetching transaction:', error);
     throw error;
   }
 }
