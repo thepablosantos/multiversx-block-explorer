@@ -1,98 +1,72 @@
-# MultiversX Block Explorer
+# Degen Sentinels - MultiversX Block Explorer
 
-![MultiversX Block Explorer](public/preview.png)
+![Degen Sentinels Home](./screenshots/home.png)
 
-A modern and intuitive block explorer for the MultiversX network, developed as part of the NearX Hackathon in partnership with MultiversX.
+A modern and intuitive blockchain explorer developed for the MultiversX network. This project was born during the NearX x MultiversX Hackathon with the goal of providing a robust and user-friendly tool for exploring blockchain data.
 
-## 🚀 About The Project
+## Tech Stack
 
-This block explorer offers a modern and intuitive interface to view and analyze MultiversX blockchain data. With an elegant and responsive design, the project provides real-time information about network transactions, blocks, accounts, and validators.
+- React 18 for building the interface
+- Node.js for development environment and package management
+- TypeScript for type safety and better development
+- Tailwind CSS for modern and responsive styling
+- React Query for state management and caching
+- MultiversX API for blockchain integration
 
-### ✨ Key Features
+## Features
 
-- 📊 Real-time dashboard statistics
-- 🔍 Advanced search for transactions, blocks, and accounts
-- 💼 Detailed account and token visualization
-- ⚡ Validator and stake monitoring
-- 🎯 Modern and responsive interface
-- 🌙 Optimized dark mode theme
+- Real-time transaction monitoring
+- Detailed transaction information including status, value, gas, and smart contract data
+- Block exploration and information
+- Account search and visualization
+- Dark mode interface optimized for better user experience
 
-## 🛠️ Built With
+## Development Environment
 
-- [React](https://reactjs.org/)
-- [Vite](https://vitejs.dev/)
-- [TailwindCSS](https://tailwindcss.com/)
-- [MultiversX API](https://api.multiversx.com)
-- [TypeScript](https://www.typescriptlang.org/)
-- [React Query](https://tanstack.com/query/latest)
+- Node.js v18+
+- npm for dependency management
+- Vite as bundler and development server
+- ESLint and Prettier for code standardization
 
-## 🚦 Getting Started
-
-### Prerequisites
-
-- Node.js 16.x or higher
-- npm or yarn
-
-### Installation
+## Getting Started
 
 1. Clone the repository
 ```bash
-git clone https://github.com/your-username/multiversx-block-explorer.git
+git clone https://github.com/yourusername/multiversx-block-explorer.git
 cd multiversx-block-explorer
 ```
 
 2. Install dependencies
 ```bash
 npm install
-# or
-yarn install
 ```
 
 3. Start the development server
 ```bash
 npm run dev
-# or
-yarn dev
 ```
 
-4. Open `http://localhost:5173` in your browser
-
-### Production Build
-
+4. Build for production
 ```bash
 npm run build
-# or
-yarn build
 ```
 
-## 🔧 Configuration
+## Screenshots
 
-The project uses environment variables for configuration. Create a `.env` file in the root directory:
+### Home Page
+![Home Page](./screenshots/home.png)
 
-```env
-VITE_API_URL=https://api.multiversx.com
-```
+### Transaction Details
+![Transaction Details](./screenshots/transaction.png)
 
-## 📱 Screenshots
+## Contributing
 
-![Dashboard](public/dashboard.png)
-![Transactions](public/transactions.png)
-![Validators](public/validators.png)
+Feel free to contribute to this project by opening issues or submitting pull requests.
 
-## 🤝 Contributing
+## License
 
-Contributions are always welcome! Please read the [contribution guidelines](CONTRIBUTING.md) first.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-1. Fork the project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+## Acknowledgments
 
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
-
-## 🏆 NearX x MultiversX Hackathon
-
-This project was developed as part of the NearX Hackathon in partnership with MultiversX, aiming to create innovative tools for the MultiversX ecosystem.
+Special thanks to NearX and MultiversX for the opportunity to participate in this amazing hackathon!

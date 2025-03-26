@@ -11,7 +11,7 @@ export default function TransactionDetail() {
 
   useEffect(() => {
     if (!hash) {
-      console.error('Nenhum hash fornecido');
+      console.error('No hash provided');
       navigate('/transactions');
     }
   }, [hash, navigate]);
@@ -23,7 +23,7 @@ export default function TransactionDetail() {
     retry: 1
   });
 
-  console.log('Estado da consulta da transação:', { 
+  console.log('Transaction query state:', { 
     hash, 
     isLoading, 
     error,
@@ -34,7 +34,7 @@ export default function TransactionDetail() {
     return (
       <div className="container mx-auto max-w-6xl px-4 py-8">
         <div className="text-center">
-          <p>Carregando detalhes da transação...</p>
+          <p>Loading transaction details...</p>
         </div>
       </div>
     );
@@ -44,7 +44,7 @@ export default function TransactionDetail() {
     return (
       <div className="container mx-auto max-w-6xl px-4 py-8">
         <div className="bg-red-500/20 text-red-500 p-4 rounded-lg">
-          <p>Erro ao carregar detalhes da transação: {error instanceof Error ? error.message : 'Erro desconhecido'}</p>
+          <p>Error loading transaction details: {error instanceof Error ? error.message : 'Unknown error'}</p>
         </div>
       </div>
     );
@@ -54,7 +54,7 @@ export default function TransactionDetail() {
     return (
       <div className="container mx-auto max-w-6xl px-4 py-8">
         <div className="bg-yellow-500/20 text-yellow-500 p-4 rounded-lg">
-          <p>Transação não encontrada</p>
+          <p>Transaction not found</p>
         </div>
       </div>
     );
@@ -63,7 +63,7 @@ export default function TransactionDetail() {
   return (
     <div className="container mx-auto max-w-6xl px-4 py-8">
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold">Detalhes da Transação</h1>
+        <h1 className="text-2xl font-bold">Transaction Details</h1>
         <div className="flex gap-2">
           <button className="bg-gray-800 text-white px-4 py-2 rounded-lg hover:bg-gray-700">
             Transaction Details
@@ -76,7 +76,7 @@ export default function TransactionDetail() {
       
       <div className="bg-gray-800/50 rounded-lg p-6">
         <div className="space-y-6">
-          {/* Hash e Status */}
+          {/* Hash and Status */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <div>
               <h2 className="text-gray-400 text-sm mb-2">Hash</h2>
@@ -114,7 +114,7 @@ export default function TransactionDetail() {
             </div>
           </div>
 
-          {/* From e To */}
+          {/* From and To */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <div>
               <h2 className="text-gray-400 text-sm mb-2">From</h2>
@@ -141,7 +141,7 @@ export default function TransactionDetail() {
             </div>
           </div>
 
-          {/* Value e Fee */}
+          {/* Value and Fee */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <div>
               <h2 className="text-gray-400 text-sm mb-2">Value</h2>
@@ -202,7 +202,7 @@ export default function TransactionDetail() {
             </div>
           )}
 
-          {/* Method e Action */}
+          {/* Method and Action */}
           {(transaction.function || transaction.data) && (
             <div className="space-y-4">
               {transaction.function && (
