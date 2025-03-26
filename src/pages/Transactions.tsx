@@ -32,7 +32,7 @@ export default function Transactions() {
 
   const renderTransactionRow = (transaction: Transaction) => {
     if (!transaction || typeof transaction !== 'object') {
-      console.error('Transação inválida:', transaction);
+      console.error('Invalid transaction:', transaction);
       return null;
     }
 
@@ -68,20 +68,20 @@ export default function Transactions() {
     <div className="container mx-auto px-4 py-8">
       <div className="flex justify-between items-center mb-8">
         <div>
-          <h1 className="text-2xl font-bold mb-2">Transações em Tempo Real</h1>
+          <h1 className="text-2xl font-bold mb-2">Real-time Transactions</h1>
           <p className="text-gray-400">
-            Pool de Transações: {stats?.totalTransactions.toLocaleString() ?? '...'}
+            Transaction Pool: {stats?.totalTransactions.toLocaleString() ?? '...'}
           </p>
         </div>
       </div>
 
       {isLoadingTransactions ? (
         <div className="text-center py-8">
-          <p>Carregando transações...</p>
+          <p>Loading transactions...</p>
         </div>
       ) : !transactions || transactions.length === 0 ? (
         <div className="text-center py-8">
-          <p>Nenhuma transação encontrada</p>
+          <p>No transactions found</p>
         </div>
       ) : (
         <div className="bg-gray-800/50 rounded-lg overflow-x-auto">
@@ -89,11 +89,11 @@ export default function Transactions() {
             <thead>
               <tr className="border-b border-gray-700">
                 <th className="px-6 py-3 text-left">Hash</th>
-                <th className="px-6 py-3 text-left">De</th>
-                <th className="px-6 py-3 text-left">Para</th>
-                <th className="px-6 py-3 text-left">Valor</th>
+                <th className="px-6 py-3 text-left">From</th>
+                <th className="px-6 py-3 text-left">To</th>
+                <th className="px-6 py-3 text-left">Value</th>
                 <th className="px-6 py-3 text-left">Status</th>
-                <th className="px-6 py-3 text-left">Idade</th>
+                <th className="px-6 py-3 text-left">Age</th>
               </tr>
             </thead>
             <tbody>
